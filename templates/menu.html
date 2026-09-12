@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Food Menu - FoodZone</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f5f7;
+            color: #172033;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: #172033;
+            color: white;
+            padding: 35px 20px;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffb900;
+            padding: 15px 20px;
+            margin-bottom: 45px;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 17px 22px;
+            border-radius: 13px;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            transition: 0.25s;
+        }
+
+        .sidebar-menu a i {
+            width: 25px;
+            text-align: center;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #ffb900;
+            color: #111;
+        }
+
+        /* ================= MAIN ================= */
+
+        .content {
+            margin-left: 300px;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .menu-header h1 {
+            font-size: 46px;
+            color: #172033;
+            margin-bottom: 8px;
+        }
+
+        .menu-header p {
+            color: #777;
+            font-size: 19px;
+        }
+
+        .cart-button {
+            background: #172033;
+            color: white;
+            text-decoration: none;
+            padding: 16px 28px;
+            border-radius: 12px;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .cart-button:hover {
+            background: #ffb900;
+            color: #111;
+        }
+
+        /* ================= SEARCH ================= */
+
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-size: 21px;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 60px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 0 20px 0 55px;
+            font-size: 19px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border: 2px solid #ffb900;
+        }
+
+        /* ================= CATEGORY BUTTONS ================= */
+
+        .category-wrapper {
+            background: white;
+            padding: 12px;
+            border-radius: 18px;
+            margin-bottom: 35px;
+            overflow: hidden;
+        }
+
+        .categories {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 5px 5px 10px;
+        }
+
+        .categories::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .categories::-webkit-scrollbar-thumb {
+            background: #999;
+            border-radius: 20px;
+        }
+
+        .category-btn {
+            flex: 0 0 auto;
+            border: 1px solid #ddd;
+            background: white;
+            color: #172033;
+            padding: 13px 24px;
+            border-radius: 30px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: #ffb900;
+            border-color: #ffb900;
+            color: #111;
+        }
+
+        /* ================= CATEGORY ================= */
+
+        .food-category {
+            margin-bottom: 55px;
+        }
+
+        .category-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .category-heading h2 {
+            font-size: 34px;
+            color: #172033;
+        }
+
+        .item-count {
+            color: #777;
+            font-size: 17px;
+        }
+
+        /* ================= GRID ================= */
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        /* ================= CARD ================= */
+
+        .food-card {
+            background: white;
+            border-radius: 17px;
+            overflow: hidden;
+            border: 1px solid #e5e5e5;
+            box-shadow: 0 5px 16px rgba(0,0,0,0.07);
+            transition: 0.3s;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.13);
+        }
+
+        /* ================= IMAGE ================= */
+
+        .food-image {
+            width: 100%;
+            height: 210px;
+            overflow: hidden;
+            background: #fff5d8;
+            position: relative;
+        }
+
+        .food-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: 0.35s;
+        }
+
+        .food-card:hover .food-image img {
+            transform: scale(1.05);
+        }
+
+        .emoji-fallback {
+            position: absolute;
+            inset: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: #fff5d8;
+        }
+
+        .emoji-fallback .big-emoji {
+            font-size: 70px;
+        }
+
+        .emoji-fallback span {
+            margin-top: 8px;
+            color: #777;
+            font-size: 14px;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        /* ================= INFO ================= */
+
+        .food-info {
+            padding: 20px;
+        }
+
+        .food-info h3 {
+            font-size: 21px;
+            color: #172033;
+            margin-bottom: 10px;
+            min-height: 50px;
+        }
+
+        .food-category-name {
+            color: #888;
+            font-size: 15px;
+            margin-bottom: 17px;
+        }
+
+        .food-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price {
+            color: #12894b;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        /* ================= ADD BUTTON ================= */
+
+        .add-form {
+            margin: 0;
+        }
+
+        .add-button {
+            border: none;
+            background: #172033;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: 0.2s;
+        }
+
+        .add-button:hover {
+            background: #ffb900;
+            color: #111;
+        }
+
+        /* ================= NO RESULT ================= */
+
+        .no-result {
+            display: none;
+            text-align: center;
+            padding: 70px;
+            color: #777;
+            font-size: 22px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1500px) {
+
+            .sidebar {
+                width: 280px;
+            }
+
+            .content {
+                margin-left: 280px;
+            }
+
+            .food-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 1100px) {
+
+            .sidebar {
+                width: 230px;
+            }
+
+            .content {
+                margin-left: 230px;
+                padding: 25px;
+            }
+
+            .food-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .menu-header h1 {
+                font-size: 38px;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding: 20px;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .menu-header h1 {
+                font-size: 32px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        🍴 FoodZone
+    </div>
+
+    <div class="sidebar-menu">
+
+        <a href="/">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+
+        <a href="/menu" class="active">
+            <i class="fa-solid fa-utensils"></i>
+            <span>Menu</span>
+        </a>
+
+        <a href="/cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>Cart</span>
+        </a>
+
+        <a href="/billing">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <span>Billing</span>
+        </a>
+
+        <a href="/order_history">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Order History</span>
+        </a>
+
+        <a href="/logout">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Logout</span>
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="content">
+
+    <!-- HEADER -->
+
+    <div class="menu-header">
+
+        <div>
+
+            <h1>🍽️ Food Menu</h1>
+
+            <p>
+                Choose your favourite food and order now.
+            </p>
+
+        </div>
+
+        <a href="{{ url_for('cart') }}" class="cart-button">
+            🛒 Cart
+        </a>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-container">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search for pizza, burger, biryani..."
+                onkeyup="searchFood()">
+
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORY BUTTONS -->
+
+    <div class="category-wrapper">
+
+        <div class="categories">
+
+            <button
+                class="category-btn active"
+                onclick="showAllCategories(this)">
+                🍽️ All
+            </button>
+
+            {% for category in food_data.keys() %}
+
+            <button
+                class="category-btn"
+                onclick="showCategory('{{ category }}', this)">
+
+                {% if category == "Pizza" %}
+                    🍕
+                {% elif category == "Burger" %}
+                    🍔
+                {% elif category == "Fries" %}
+                    🍟
+                {% elif category == "Cold Drink" %}
+                    🥤
+                {% elif category == "Pasta" %}
+                    🍝
+                {% elif category == "Sandwich" %}
+                    🥪
+                {% elif category == "Biryani" %}
+                    🍛
+                {% elif category == "Chicken" %}
+                    🍗
+                {% elif category == "Veg" %}
+                    🥗
+                {% elif category == "Non-Veg" %}
+                    🍖
+                {% elif category == "Cake" %}
+                    🎂
+                {% elif category == "Ice Cream" %}
+                    🍨
+                {% elif category == "Desserts" %}
+                    🧁
+                {% elif category == "South Indian" %}
+                    🥘
+                {% elif category == "Chinese" %}
+                    🥡
+                {% elif category == "Rolls" %}
+                    🌯
+                {% elif category == "Momos" %}
+                    🥟
+                {% elif category == "Juice" %}
+                    🧃
+                {% elif category == "Coffee" %}
+                    ☕
+                {% elif category == "Tea" %}
+                    🍵
+                {% else %}
+                    🍽️
+                {% endif %}
+
+                {{ category }}
+
+            </button>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOD CATEGORIES ================= -->
+
+    {% for category, items in food_data.items() %}
+
+    <div
+        class="food-category"
+        data-category="{{ category }}">
+
+        <div class="category-heading">
+
+            <h2>
+
+                {% if category == "Pizza" %}
+                    🍕
+                {% elif category == "Burger" %}
+                    🍔
+                {% elif category == "Fries" %}
+                    🍟
+                {% elif category == "Cold Drink" %}
+                    🥤
+                {% elif category == "Pasta" %}
+                    🍝
+                {% elif category == "Sandwich" %}
+                    🥪
+                {% elif category == "Biryani" %}
+                    🍛
+                {% elif category == "Chicken" %}
+                    🍗
+                {% elif category == "Veg" %}
+                    🥗
+                {% elif category == "Non-Veg" %}
+                    🍖
+                {% elif category == "Cake" %}
+                    🎂
+                {% elif category == "Ice Cream" %}
+                    🍨
+                {% elif category == "Desserts" %}
+                    🧁
+                {% elif category == "South Indian" %}
+                    🥘
+                {% elif category == "Chinese" %}
+                    🥡
+                {% elif category == "Rolls" %}
+                    🌯
+                {% elif category == "Momos" %}
+                    🥟
+                {% elif category == "Juice" %}
+                    🧃
+                {% elif category == "Coffee" %}
+                    ☕
+                {% elif category == "Tea" %}
+                    🍵
+                {% else %}
+                    🍽️
+                {% endif %}
+
+                {{ category }}
+
+            </h2>
+
+            <span class="item-count">
+                {{ items|length }} items
+            </span>
+
+        </div>
+
+
+        <div class="food-grid">
+
+            {% for item in items %}
+
+            <div
+                class="food-card"
+                data-name="{{ item.name|lower }}"
+                data-category="{{ category }}">
+
+                <!-- ================= IMAGE ================= -->
+
+                <div class="food-image">
+
+                    <img
+                        src="{{ url_for('static', filename='images/food/' + item.image) }}"
+                        alt="{{ item.name }}"
+                        loading="lazy"
+                        onerror="showFallback(this)">
+
+                    <div class="emoji-fallback">
+
+                        <div class="big-emoji">
+
+                            {% if category == "Pizza" %}
+                                🍕
+                            {% elif category == "Burger" %}
+                                🍔
+                            {% elif category == "Fries" %}
+                                🍟
+                            {% elif category == "Cold Drink" %}
+                                🥤
+                            {% elif category == "Pasta" %}
+                                🍝
+                            {% elif category == "Sandwich" %}
+                                🥪
+                            {% elif category == "Biryani" %}
+                                🍛
+                            {% elif category == "Chicken" %}
+                                🍗
+                            {% elif category == "Veg" %}
+                                🥗
+                            {% elif category == "Non-Veg" %}
+                                🍖
+                            {% elif category == "Cake" %}
+                                🎂
+                            {% elif category == "Ice Cream" %}
+                                🍨
+                            {% elif category == "Desserts" %}
+                                🧁
+                            {% elif category == "South Indian" %}
+                                🥘
+                            {% elif category == "Chinese" %}
+                                🥡
+                            {% elif category == "Rolls" %}
+                                🌯
+                            {% elif category == "Momos" %}
+                                🥟
+                            {% elif category == "Juice" %}
+                                🧃
+                            {% elif category == "Coffee" %}
+                                ☕
+                            {% elif category == "Tea" %}
+                                🍵
+                            {% else %}
+                                🍽️
+                            {% endif %}
+
+                        </div>
+
+                        <span>{{ item.name }}</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= INFORMATION ================= -->
+
+                <div class="food-info">
+
+                    <h3>
+                        {{ item.name }}
+                    </h3>
+
+                    <div class="food-category-name">
+                        {{ category }}
+                    </div>
+
+                    <div class="food-bottom">
+
+                        <span class="price">
+                            ₹{{ item.price }}
+                        </span>
+
+                        <form
+                            class="add-form"
+                            action="{{ url_for('add_to_cart') }}"
+                            method="POST">
+
+                            <input
+                                type="hidden"
+                                name="item"
+                                value="{{ item.name }}">
+
+                            <input
+                                type="hidden"
+                                name="price"
+                                value="{{ item.price }}">
+
+                            <input
+                                type="hidden"
+                                name="category"
+                                value="{{ category }}">
+
+                            <button
+                                type="submit"
+                                class="add-button">
+
+                                <i class="fa-solid fa-cart-plus"></i>
+                                Add
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+
+    <!-- NO RESULT -->
+
+    <div id="noResult" class="no-result">
+        😔 No food item found.
+    </div>
+
+</div>
+
+
+<script>
+
+/* ================= IMAGE FALLBACK ================= */
+
+function showFallback(img) {
+
+    img.style.display = "none";
+
+    const fallback =
+        img.parentElement.querySelector(".emoji-fallback");
+
+    if (fallback) {
+        fallback.style.display = "flex";
+    }
+}
+
+
+/* ================= ALL CATEGORIES ================= */
+
+function showAllCategories(button) {
+
+    const sections =
+        document.querySelectorAll(".food-category");
+
+    sections.forEach(function(section) {
+        section.style.display = "block";
+    });
+
+
+    const cards =
+        document.querySelectorAll(".food-card");
+
+    cards.forEach(function(card) {
+        card.style.display = "block";
+    });
+
+
+    document
+        .querySelectorAll(".category-btn")
+        .forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+
+    button.classList.add("active");
+
+
+    document.getElementById("searchInput").value = "";
+
+    document.getElementById("noResult").style.display = "none";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* ================= CATEGORY ================= */
+
+function showCategory(category, button) {
+
+    const sections =
+        document.querySelectorAll(".food-category");
+
+
+    sections.forEach(function(section) {
+
+        if (section.dataset.category === category) {
+
+            section.style.display = "block";
+
+        } else {
+
+            section.style.display = "none";
+
+        }
+
+    });
+
+
+    document
+        .querySelectorAll(".category-btn")
+        .forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+
+    button.classList.add("active");
+
+
+    document.getElementById("searchInput").value = "";
+
+    document.getElementById("noResult").style.display = "none";
+
+
+    const target =
+        document.querySelector(
+            '.food-category[data-category="' +
+            CSS.escape(category) +
+            '"]'
+        );
+
+
+    if (target) {
+
+        target.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+}
+
+
+/* ================= SEARCH ================= */
+
+function searchFood() {
+
+    const search =
+        document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const cards =
+        document.querySelectorAll(".food-card");
+
+
+    const sections =
+        document.querySelectorAll(".food-category");
+
+
+    let found = false;
+
+
+    if (search === "") {
+
+        sections.forEach(function(section) {
+            section.style.display = "block";
+        });
+
+
+        cards.forEach(function(card) {
+            card.style.display = "block";
+        });
+
+
+        document.getElementById("noResult").style.display = "none";
+
+        return;
+    }
+
+
+    cards.forEach(function(card) {
+
+        const name = card.dataset.name;
+
+        if (name.includes(search)) {
+
+            card.style.display = "block";
+
+            found = true;
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+
+    sections.forEach(function(section) {
+
+        const visibleCards =
+            section.querySelectorAll(
+                '.food-card:not([style*="display: none"])'
+            );
+
+
+        if (visibleCards.length > 0) {
+
+            section.style.display = "block";
+
+        } else {
+
+            section.style.display = "none";
+
+        }
+
+    });
+
+
+    document.getElementById("noResult").style.display =
+        found ? "none" : "block";
+
+}
+
+
+/* ================= IMAGE ERROR ================= */
+
+document
+    .querySelectorAll(".food-image img")
+    .forEach(function(img) {
+
+        img.addEventListener("error", function() {
+            showFallback(this);
+        });
+
+    });
+
+</script>
+
+</body>
+</html>

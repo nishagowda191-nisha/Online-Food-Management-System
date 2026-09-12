@@ -1,0 +1,686 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FoodZone - Online Food Management</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f5f7;
+            color: #172033;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+
+            background: #172033;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 60px;
+
+            z-index: 1000;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            color: #ffb900;
+            font-size: 28px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 5px;
+            transition: 0.25s;
+        }
+
+        .nav-links a:hover {
+            color: #ffb900;
+        }
+
+        .login-btn {
+            background: #ffb900;
+            color: #111 !important;
+            padding: 10px 20px !important;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .login-btn:hover {
+            background: white;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 120px 30px 80px;
+
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.58),
+                    rgba(0,0,0,0.58)
+                ),
+                url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1800&q=80");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 65px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 span {
+            color: #ffb900;
+        }
+
+        .hero-content p {
+            font-size: 22px;
+            line-height: 1.7;
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            text-decoration: none;
+
+            padding: 16px 30px;
+
+            border-radius: 10px;
+
+            font-size: 18px;
+            font-weight: bold;
+
+            transition: 0.25s;
+        }
+
+        .primary-btn {
+            background: #ffb900;
+            color: #111;
+        }
+
+        .primary-btn:hover {
+            background: white;
+            transform: translateY(-3px);
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #172033;
+        }
+
+        .secondary-btn:hover {
+            background: #ffb900;
+            transform: translateY(-3px);
+        }
+
+        /* ================= COMMON SECTION ================= */
+
+        .section {
+            padding: 90px 60px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+            color: #172033;
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            color: #777;
+            font-size: 18px;
+        }
+
+        /* ================= ABOUT ================= */
+
+        #about {
+            background: white;
+        }
+
+        .about-container {
+            max-width: 1100px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 380px;
+
+            object-fit: cover;
+
+            border-radius: 20px;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .about-text h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* ================= SERVICES ================= */
+
+        #services {
+            background: #f4f5f7;
+        }
+
+        .service-container {
+            max-width: 1200px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 25px;
+        }
+
+        .service-card {
+            background: white;
+
+            padding: 35px 25px;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+
+            transition: 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .service-card i {
+            font-size: 45px;
+            color: #ffb900;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .service-card p {
+            color: #777;
+            line-height: 1.6;
+        }
+
+        /* ================= CONTACT ================= */
+
+        #contact {
+            background: white;
+        }
+
+        .contact-container {
+            max-width: 1100px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+        .contact-card {
+            background: #f4f5f7;
+
+            padding: 35px 25px;
+
+            border-radius: 18px;
+
+            text-align: center;
+        }
+
+        .contact-card i {
+            font-size: 35px;
+            color: #ffb900;
+            margin-bottom: 15px;
+        }
+
+        .contact-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .contact-card p {
+            color: #777;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #172033;
+            color: white;
+
+            text-align: center;
+
+            padding: 30px;
+        }
+
+        footer span {
+            color: #ffb900;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 0 25px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 15px;
+            }
+
+            .hero-content h1 {
+                font-size: 45px;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+            }
+
+            .service-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: auto;
+                min-height: 70px;
+
+                flex-direction: column;
+
+                padding: 15px;
+                gap: 10px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding-top: 160px;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .hero-content p {
+                font-size: 18px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .section {
+                padding: 65px 20px;
+            }
+
+            .section-title h2 {
+                font-size: 32px;
+            }
+
+            .service-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        🍴 FoodZone
+    </a>
+
+    <div class="nav-links">
+
+        <a href="#about">
+            About
+        </a>
+
+        <a href="#services">
+            Services
+        </a>
+
+        <a href="#contact">
+            Contact
+        </a>
+
+        <a href="{{ url_for('login') }}" class="login-btn">
+            Login
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>
+            Welcome to <span>FoodZone</span>
+        </h1>
+
+        <p>
+            Discover delicious food, order your favourite dishes
+            and enjoy a simple online food ordering experience.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="{{ url_for('menu') }}"
+               class="hero-btn primary-btn">
+                🍽️ Explore Menu
+            </a>
+
+            <a href="#about"
+               class="hero-btn secondary-btn">
+                Learn More
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section id="about" class="section">
+
+    <div class="section-title">
+
+        <h2>About FoodZone</h2>
+
+        <p>
+            Your simple and convenient online food management system
+        </p>
+
+    </div>
+
+    <div class="about-container">
+
+        <img
+            class="about-image"
+            src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1000&q=80"
+            alt="Food">
+
+        <div class="about-text">
+
+            <h3>
+                Delicious Food at Your Fingertips
+            </h3>
+
+            <p>
+                FoodZone is an online food management system designed
+                to make food ordering easy and convenient.
+            </p>
+
+            <p>
+                Customers can browse different food categories,
+                view food items and prices, add items to the cart,
+                place orders and manage their order history.
+            </p>
+
+            <p>
+                Our goal is to provide a simple, user-friendly
+                and enjoyable online food ordering experience.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SERVICES ================= -->
+
+<section id="services" class="section">
+
+    <div class="section-title">
+
+        <h2>Our Services</h2>
+
+        <p>
+            Everything you need for convenient food ordering
+        </p>
+
+    </div>
+
+    <div class="service-container">
+
+        <div class="service-card">
+
+            <i class="fa-solid fa-utensils"></i>
+
+            <h3>Food Menu</h3>
+
+            <p>
+                Browse different categories and choose
+                your favourite food items.
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            <h3>Online Cart</h3>
+
+            <p>
+                Add food items to your cart and manage
+                your order before checkout.
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <i class="fa-solid fa-credit-card"></i>
+
+            <h3>Online Payment</h3>
+
+            <p>
+                Complete your food order through
+                a convenient payment process.
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <i class="fa-solid fa-box"></i>
+
+            <h3>Order Management</h3>
+
+            <p>
+                View your orders and check your
+                previous order history.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+
+<section id="contact" class="section">
+
+    <div class="section-title">
+
+        <h2>Contact Us</h2>
+
+        <p>
+            Get in touch with FoodZone
+        </p>
+
+    </div>
+
+    <div class="contact-container">
+
+        <div class="contact-card">
+
+            <i class="fa-solid fa-envelope"></i>
+
+            <h3>Email</h3>
+
+            <p>
+                foodzone@gmail.com
+            </p>
+
+        </div>
+
+
+        <div class="contact-card">
+
+            <i class="fa-solid fa-phone"></i>
+
+            <h3>Phone</h3>
+
+            <p>
+                +91 9876543210
+            </p>
+
+        </div>
+
+
+        <div class="contact-card">
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            <h3>Location</h3>
+
+            <p>
+                Bengaluru, Karnataka
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 <span>FoodZone</span>.
+        All Rights Reserved.
+    </p>
+
+</footer>
+
+</body>
+</html>
+```
